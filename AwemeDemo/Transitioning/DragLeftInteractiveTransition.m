@@ -8,13 +8,12 @@
 
 #import "DragLeftInteractiveTransition.h"
 
-
 @interface DragLeftInteractiveTransition ()
 
 @property (nonatomic, strong) UIViewController *presentingVC;
 @property (nonatomic, assign) CGPoint viewControllerCenter;
 
-@property (nonatomic, strong) CALayer *gradientLayer;
+@property (nonatomic, strong) CALayer *transitionMaskLayer;
 
 @end
 
@@ -27,11 +26,8 @@
 }
 
 - (void)updateInteractiveTransition:(CGFloat)percentComplete {
-//    NSLog(@"%.2f",percentComplete);
+    NSLog(@"%.2f",percentComplete);
     
-//    if (_gradientLayer) {
-//
-//    }
 }
 
 - (void)cancelInteractiveTransition {
@@ -43,11 +39,11 @@
 }
 
 
-- (CALayer *)gradientLayer {
-    if (_gradientLayer == nil) {
-        _gradientLayer = [CALayer layer];
+- (CALayer *)transitionMaskLayer {
+    if (_transitionMaskLayer == nil) {
+        _transitionMaskLayer = [CALayer layer];
     }
-    return _gradientLayer;
+    return _transitionMaskLayer;
 }
 
 #pragma mark -
@@ -76,15 +72,15 @@
                 self.isInteracting = NO;
                 return;
             }
-            self.gradientLayer.bounds = vcView.bounds;
-            self.gradientLayer.opaque = NO;
-            self.gradientLayer.opacity = 1;
-//            self.gradientLayer.backgroundColor = [UIColor whiteColor].CGColor; //必须有颜色不能透明
-            [self.gradientLayer setNeedsDisplay];
-            [self.gradientLayer displayIfNeeded];
-            self.gradientLayer.anchorPoint = CGPointMake(0.5, 0.5);
-            self.gradientLayer.position = CGPointMake(vcView.frame.size.width/2.0f, vcView.frame.size.height/2.0f);
-            vcView.layer.mask = self.gradientLayer;
+            self.transitionMaskLayer.frame = vcView.frame;
+            self.transitionMaskLayer.opaque = NO;
+            self.transitionMaskLayer.opacity = 1;
+            self.transitionMaskLayer.backgroundColor = [UIColor whiteColor].CGColor; //必须有颜色不能透明
+            [self.transitionMaskLayer setNeedsDisplay];
+            [self.transitionMaskLayer displayIfNeeded];
+            self.transitionMaskLayer.anchorPoint = CGPointMake(0.5, 0.5);
+            self.transitionMaskLayer.position = CGPointMake(vcView.frame.size.width/2.0f, vcView.frame.size.height/2.0f);
+            vcView.layer.mask = self.transitionMaskLayer;
             vcView.layer.masksToBounds = YES;
             
             self.isInteracting = YES;
@@ -123,8 +119,8 @@
                 [_presentingVC dismissViewControllerAnimated:YES completion:nil];
             }
             //移除 遮罩
-            [self.gradientLayer removeFromSuperlayer];
-            self.gradientLayer = nil;
+            [self.transitionMaskLayer removeFromSuperlayer];
+            self.transitionMaskLayer = nil;
         }
             break;
         default:
