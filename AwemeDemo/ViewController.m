@@ -110,22 +110,25 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     AwemeListViewController *awemeVC = [[AwemeListViewController alloc] init];
-    awemeVC.transitioningDelegate = self;
+    awemeVC.transitioningDelegate = self; //0
     
+    // 1
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    // 2
     CGRect cellFrame = cell.frame;
+    // 3
     CGRect cellConvertedFrame = [collectionView convertRect:cellFrame toView:collectionView.superview];
     
     //弹窗转场
-    self.presentScaleAnimation.cellConvertFrame = cellConvertedFrame;
+    self.presentScaleAnimation.cellConvertFrame = cellConvertedFrame; //4
     
     //消失转场
-    self.dismissScaleAnimation.selectCell = cell;
-    self.dismissScaleAnimation.originCellFrame  = cellFrame;
-    self.dismissScaleAnimation.finalCellFrame = cellConvertedFrame;
+    self.dismissScaleAnimation.selectCell = cell; // 5
+    self.dismissScaleAnimation.originCellFrame  = cellFrame; //6
+    self.dismissScaleAnimation.finalCellFrame = cellConvertedFrame; //7
     
-    awemeVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    self.modalPresentationStyle = UIModalPresentationCurrentContext;
+    awemeVC.modalPresentationStyle = UIModalPresentationOverCurrentContext; //8
+    self.modalPresentationStyle = UIModalPresentationCurrentContext; //9
     
     [self.leftDragInteractiveTransition wireToViewController:awemeVC];
     [self presentViewController:awemeVC animated:YES completion:nil];

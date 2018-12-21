@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) UIViewController *presentingVC;
 @property (nonatomic, assign) CGPoint viewControllerCenter;
-
 @property (nonatomic, strong) CALayer *transitionMaskLayer;
 
 @end
